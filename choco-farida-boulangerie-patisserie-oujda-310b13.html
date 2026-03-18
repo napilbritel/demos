@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choco Farida : Boulangerie &amp; Pâtisserie | Oujda</title>
+    <meta name="description" content="Choco Farida : Boulangerie &amp; Pâtisserie - Boulangerie a Oujda, Maroc.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --c:#D4A373;
+            --c2:#D4A37315;
+            --c3:#D4A37340;
+            --dark:#0a0a0f;
+            --g1:#f0f0f5;
+            --g2:#6b7280;
+            --r:12px;
+        }
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+        body{font-family:'Outfit',sans-serif;color:#1a1a2e;overflow-x:hidden;background:#fafafa;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+        /* === PRELOADER === */
+        .loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+        .loader.done{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring{width:50px;height:50px;border:3px solid var(--c3);border-top-color:var(--c);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* === ANIMATIONS === */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes slideRight{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--c3)}50%{box-shadow:0 0 0 20px transparent}}
+        @keyframes gradientMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        .anim{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}
+        .anim.show{opacity:1;transform:none}
+
+        /* === HERO === */
+        .hero{
+            min-height:100vh;display:flex;align-items:center;justify-content:center;
+            background:linear-gradient(135deg,var(--dark) 0%,#1a1a2e 50%,var(--c) 150%);
+            position:relative;overflow:hidden;text-align:center;padding:40px 20px;
+        }
+        .hero::before{
+            content:'';position:absolute;width:600px;height:600px;
+            background:radial-gradient(circle,var(--c3),transparent 70%);
+            top:-100px;right:-100px;border-radius:50%;animation:float 6s ease-in-out infinite;
+        }
+        .hero::after{
+            content:'';position:absolute;width:400px;height:400px;
+            background:radial-gradient(circle,#D4A37320,transparent 70%);
+            bottom:-50px;left:-50px;border-radius:50%;animation:float 8s ease-in-out infinite reverse;
+        }
+        .hero-content{position:relative;z-index:2;max-width:700px}
+        .hero-badge{
+            display:inline-flex;align-items:center;gap:8px;
+            background:rgba(255,255,255,.08);backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);
+            padding:8px 20px;border-radius:50px;font-size:.85rem;font-weight:500;
+            margin-bottom:24px;animation:fadeUp .8s ease forwards;
+        }
+        .hero-badge .dot{width:8px;height:8px;background:#34d399;border-radius:50%;animation:pulse 2s infinite}
+        .hero-icon{font-size:72px;margin-bottom:20px;animation:scaleIn .8s ease .2s both;filter:drop-shadow(0 0 40px var(--c3))}
+        .hero h1{
+            font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4rem);
+            font-weight:900;color:white;line-height:1.1;margin-bottom:16px;
+            animation:fadeUp .8s ease .3s both;
+        }
+        .hero h1 span{
+            background:linear-gradient(135deg,var(--c),#f59e0b);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            background-size:200% 200%;animation:gradientMove 3s ease infinite;
+        }
+        .hero-loc{
+            color:rgba(255,255,255,.7);font-size:1.15rem;font-weight:400;
+            margin-bottom:20px;animation:fadeUp .8s ease .4s both;
+        }
+        .hero-stars{
+            display:flex;align-items:center;justify-content:center;gap:4px;
+            margin-bottom:8px;animation:fadeUp .8s ease .5s both;
+        }
+        .star{width:22px;height:22px}
+        .star.filled path{fill:#fbbf24}
+        .star.empty path{fill:#4b5563}
+        .hero-reviews{color:rgba(255,255,255,.5);font-size:.9rem;animation:fadeUp .8s ease .55s both}
+        .hero-cta{
+            display:inline-flex;align-items:center;gap:10px;
+            background:var(--c);color:white;padding:16px 36px;border-radius:60px;
+            text-decoration:none;font-weight:700;font-size:1.05rem;
+            margin-top:32px;transition:all .3s;animation:fadeUp .8s ease .6s both;
+            box-shadow:0 8px 30px var(--c3);
+        }
+        .hero-cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 40px var(--c3)}
+        .hero-scroll{
+            position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+            color:rgba(255,255,255,.4);font-size:.8rem;animation:float 3s ease-in-out infinite;
+        }
+
+        /* === NAV === */
+        .nav{
+            position:sticky;top:0;z-index:100;
+            background:rgba(255,255,255,.85);backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(0,0,0,.06);padding:0 20px;
+        }
+        .nav-inner{
+            max-width:900px;margin:0 auto;display:flex;align-items:center;
+            justify-content:space-between;height:60px;
+        }
+        .nav-brand{font-weight:800;font-size:1.1rem;color:var(--dark);text-decoration:none}
+        .nav-brand span{color:var(--c)}
+        .nav-links{display:flex;gap:8px}
+        .nav-links a{
+            color:var(--g2);text-decoration:none;font-weight:500;font-size:.9rem;
+            padding:8px 16px;border-radius:8px;transition:all .3s;
+        }
+        .nav-links a:hover{color:var(--c);background:var(--c2)}
+
+        /* === SECTIONS === */
+        .sec{padding:80px 20px;max-width:900px;margin:0 auto}
+        .sec-tag{
+            display:inline-flex;align-items:center;gap:6px;
+            color:var(--c);font-weight:600;font-size:.85rem;
+            text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;
+        }
+        .sec-tag::before{content:'';width:24px;height:2px;background:var(--c);border-radius:2px}
+        .sec h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:12px;line-height:1.2}
+        .sec-sub{color:var(--g2);font-size:1.05rem;line-height:1.7;margin-bottom:40px;max-width:600px}
+
+        /* === ABOUT === */
+        .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+        .about-card{
+            background:white;border-radius:16px;padding:28px;
+            border:1px solid #e5e7eb;transition:all .4s;position:relative;overflow:hidden;
+        }
+        .about-card::before{
+            content:'';position:absolute;top:0;left:0;width:100%;height:3px;
+            background:linear-gradient(90deg,var(--c),transparent);
+        }
+        .about-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.08)}
+        .about-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--c);line-height:1}
+        .about-label{color:var(--g2);font-size:.85rem;margin-top:4px}
+
+        /* === SERVICES === */
+        .srv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+        .srv{
+            background:white;border-radius:16px;padding:32px 20px;text-align:center;
+            border:1px solid #e5e7eb;transition:all .5s cubic-bezier(.22,1,.36,1);
+            position:relative;overflow:hidden;animation:fadeUp .6s ease both;
+        }
+        .srv-glow{
+            position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+            width:80px;height:80px;background:var(--c);filter:blur(60px);opacity:0;transition:opacity .5s;
+        }
+        .srv:hover .srv-glow{opacity:.3}
+        .srv:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.1);border-color:var(--c)}
+        .srv-icon{font-size:40px;margin-bottom:16px;transition:transform .5s}
+        .srv:hover .srv-icon{transform:scale(1.2) rotate(-5deg)}
+        .srv h3{font-weight:600;font-size:1rem;color:var(--dark)}
+        .srv-line{width:30px;height:3px;background:var(--c);border-radius:2px;margin:12px auto 0;opacity:.5;transition:all .3s}
+        .srv:hover .srv-line{width:50px;opacity:1}
+
+        /* === WHY US === */
+        .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .why-item{text-align:center;padding:24px 16px}
+        .why-icon{font-size:36px;margin-bottom:12px}
+        .why-item h4{font-weight:700;margin-bottom:4px}
+        .why-item p{color:var(--g2);font-size:.9rem}
+
+        /* === CTA === */
+        .cta-sec{
+            background:linear-gradient(135deg,var(--dark),#1a1a2e);
+            padding:80px 20px;text-align:center;position:relative;overflow:hidden;
+        }
+        .cta-sec::before{
+            content:'';position:absolute;inset:0;
+            background:radial-gradient(circle at 30% 50%,var(--c3),transparent 60%);
+        }
+        .cta-inner{position:relative;z-index:2;max-width:600px;margin:0 auto}
+        .cta-inner h2{font-family:'Playfair Display',serif;font-size:2rem;color:white;margin-bottom:12px}
+        .cta-inner p{color:rgba(255,255,255,.6);margin-bottom:32px;font-size:1.05rem}
+        .cta-wa{
+            display:inline-flex;align-items:center;gap:12px;
+            background:#25D366;color:white;padding:18px 44px;border-radius:60px;
+            text-decoration:none;font-weight:700;font-size:1.15rem;
+            transition:all .3s;box-shadow:0 8px 30px rgba(37,211,102,.4);
+        }
+        .cta-wa:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 14px 40px rgba(37,211,102,.5)}
+        .cta-wa svg{width:24px;height:24px;fill:white}
+
+        /* === CONTACT === */
+        .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+        .c-card{
+            background:white;border-radius:16px;padding:24px;text-align:center;
+            border:1px solid #e5e7eb;transition:all .3s;
+        }
+        .c-card:hover{border-color:var(--c);box-shadow:0 8px 25px rgba(0,0,0,.06)}
+        .c-card .c-icon{width:48px;height:48px;background:var(--c2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px}
+        .c-card h4{font-size:.8rem;color:var(--g2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+        .c-card p{font-weight:600;color:var(--dark)}
+
+        /* === FOOTER === */
+        .foot{background:var(--dark);padding:32px 20px;text-align:center}
+        .foot-brand{font-family:'Playfair Display',serif;font-size:1.3rem;color:white;font-weight:700;margin-bottom:6px}
+        .foot-brand span{color:var(--c)}
+        .foot p{color:rgba(255,255,255,.4);font-size:.85rem}
+        .foot a{color:var(--c);text-decoration:none}
+
+        /* === FLOATING WA + BADGE === */
+        .float-wa{
+            position:fixed;bottom:24px;right:24px;z-index:200;
+            width:60px;height:60px;background:#25D366;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 4px 20px rgba(37,211,102,.5);transition:all .3s;
+            animation:pulse 2s infinite;
+        }
+        .float-wa:hover{transform:scale(1.1)}
+        .float-wa svg{width:30px;height:30px;fill:white}
+        .badge{
+            position:fixed;bottom:24px;left:24px;z-index:200;
+            background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+            padding:8px 16px;border-radius:50px;font-size:.75rem;color:var(--g2);
+            box-shadow:0 2px 15px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.06);
+        }
+        .badge a{color:var(--c);text-decoration:none;font-weight:700}
+
+        /* === RESPONSIVE — Mobile First (Phone Priority) === */
+        @media(max-width:768px){
+            .hero{min-height:100svh;padding:60px 16px 40px}
+            .hero::before{width:300px;height:300px;top:-80px;right:-80px}
+            .hero::after{width:200px;height:200px}
+            .hero-icon{font-size:56px;margin-bottom:14px}
+            .hero h1{font-size:2rem;margin-bottom:12px}
+            .hero-badge{font-size:.75rem;padding:6px 14px}
+            .hero-loc{font-size:1rem}
+            .hero-cta{padding:14px 28px;font-size:.95rem;width:90%;justify-content:center}
+            .hero-scroll{display:none}
+
+            .nav-links{display:none}
+            .nav-inner{justify-content:center}
+
+            .sec{padding:50px 16px}
+            .sec h2{font-size:1.6rem}
+            .sec-sub{font-size:.95rem}
+
+            .about-grid{grid-template-columns:1fr 1fr;gap:12px}
+            .about-card{padding:18px 14px}
+            .about-num{font-size:2rem}
+            .about-label{font-size:.75rem}
+
+            .srv-grid{grid-template-columns:1fr 1fr;gap:12px}
+            .srv{padding:22px 14px}
+            .srv-icon{font-size:32px;margin-bottom:10px}
+            .srv h3{font-size:.85rem}
+
+            .why-grid{grid-template-columns:1fr;gap:8px}
+            .why-item{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 0;border-bottom:1px solid #eee}
+            .why-item:last-child{border:none}
+            .why-icon{font-size:28px;flex-shrink:0}
+            .why-item p{font-size:.85rem}
+
+            .cta-sec{padding:50px 16px}
+            .cta-inner h2{font-size:1.5rem}
+            .cta-inner p{font-size:.9rem}
+            .cta-wa{padding:16px 32px;font-size:1rem;width:90%;justify-content:center}
+
+            .contact-grid{grid-template-columns:1fr;gap:10px}
+            .c-card{display:flex;align-items:center;gap:14px;text-align:left;padding:16px}
+            .c-card .c-icon{margin:0;flex-shrink:0}
+            .c-card h4{margin-bottom:2px}
+
+            .float-wa{width:56px;height:56px;bottom:16px;right:16px}
+            .float-wa svg{width:26px;height:26px}
+            .badge{bottom:16px;left:12px;font-size:.7rem;padding:6px 12px}
+        }
+
+        /* Small phones */
+        @media(max-width:380px){
+            .hero h1{font-size:1.6rem}
+            .about-grid{grid-template-columns:1fr 1fr;gap:8px}
+            .about-card{padding:14px 10px}
+            .about-num{font-size:1.6rem}
+            .srv-grid{grid-template-columns:1fr;gap:10px}
+            .srv{display:flex;align-items:center;gap:14px;text-align:left;padding:16px}
+            .srv-icon{margin:0;flex-shrink:0}
+            .srv-glow{display:none}
+            .srv-line{display:none}
+        }
+
+        /* Tablet */
+        @media(min-width:769px) and (max-width:1024px){
+            .hero h1{font-size:3rem}
+            .about-grid{grid-template-columns:repeat(2,1fr)}
+            .srv-grid{grid-template-columns:repeat(2,1fr)}
+        }
+
+        /* Touch device improvements */
+        @media(hover:none){
+            .srv:hover{transform:none;box-shadow:none}
+            .srv:active{transform:scale(.97);transition:transform .1s}
+            .about-card:hover{transform:none;box-shadow:none}
+            .hero-cta:hover{transform:none}
+            .hero-cta:active{transform:scale(.97)}
+            .cta-wa:hover{transform:none}
+            .cta-wa:active{transform:scale(.97)}
+        }
+    </style>
+</head>
+<body>
+    <!-- PRELOADER -->
+    <div class="loader" id="loader"><div class="loader-ring"></div></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span> Boulangerie &mdash; Oujda</div>
+            <div class="hero-icon">🥖</div>
+            <h1>Choco <span>Farida : Boulangerie &amp; Pâtisserie</span></h1>
+            <p class="hero-loc">📍 Oujda, Maroc</p>
+            <div class='hero-stars'><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star half" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#hg)" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><span style='color:white;font-weight:700;margin-left:8px'>4.4</span></div><p class='hero-reviews'>43 avis sur Google</p>
+            <a href="https://wa.me/212661539741" target="_blank" class="hero-cta">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.3 0-4.438-.744-6.167-2.006l-.432-.316-3.25 1.09 1.09-3.25-.316-.432A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                Commandez maintenant
+            </a>
+        </div>
+        <div class="hero-scroll">&#9660; Découvrir</div>
+    </section>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">Choco<span>.</span></a>
+            <div class="nav-links">
+                <a href="#about">À propos</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ABOUT -->
+    <section class="sec" id="about">
+        <div class="anim">
+            <div class="sec-tag">À propos</div>
+            <h2>Bienvenue chez<br>Choco Farida : Boulangerie &amp; Pâtisserie</h2>
+            <p class="sec-sub">
+                Votre <strong>boulangerie</strong> de confiance à <strong>Oujda</strong>.
+                Nous nous engageons chaque jour à vous offrir une expérience exceptionnelle
+                dans un cadre professionnel et chaleureux.
+            </p>
+        </div>
+        <div class="about-grid anim">
+            <div class="about-card">
+                <div class="about-num">43+</div>
+                <div class="about-label">Clients satisfaits</div>
+            </div>
+            <div class="about-card">
+                <div class="about-num">4.4</div>
+                <div class="about-label">Note moyenne</div>
+            </div>
+            <div class="about-card">
+                <div class="about-num">OUJ</div>
+                <div class="about-label">Oujda, Maroc</div>
+            </div>
+            <div class="about-card">
+                <div class="about-num">7j/7</div>
+                <div class="about-label">À votre service</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="sec" id="services" style="background:var(--g1);border-radius:0;max-width:100%;padding:80px 20px">
+        <div style="max-width:900px;margin:0 auto">
+            <div class="anim">
+                <div class="sec-tag">Services</div>
+                <h2>Ce que nous proposons</h2>
+                <p class="sec-sub">Des services de qualité adaptés à vos besoins.</p>
+            </div>
+            <div class="srv-grid anim">
+                
+            <div class="srv" style="animation-delay:0.0s">
+                <div class="srv-glow"></div>
+                <div class="srv-icon">🥖</div>
+                <h3>Pain artisanal</h3>
+                <div class="srv-line"></div>
+            </div>
+            <div class="srv" style="animation-delay:0.15s">
+                <div class="srv-glow"></div>
+                <div class="srv-icon">🥖</div>
+                <h3>Viennoiseries</h3>
+                <div class="srv-line"></div>
+            </div>
+            <div class="srv" style="animation-delay:0.3s">
+                <div class="srv-glow"></div>
+                <div class="srv-icon">🥖</div>
+                <h3>Gâteaux sur commande</h3>
+                <div class="srv-line"></div>
+            </div>
+            <div class="srv" style="animation-delay:0.44999999999999996s">
+                <div class="srv-glow"></div>
+                <div class="srv-icon">🥖</div>
+                <h3>Livraison</h3>
+                <div class="srv-line"></div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US -->
+    <section class="sec">
+        <div class="anim">
+            <div class="sec-tag">Pourquoi nous</div>
+            <h2>Ce qui nous distingue</h2>
+            <p class="sec-sub">Nos engagements pour votre satisfaction.</p>
+        </div>
+        <div class="why-grid anim">
+            <div class="why-item">
+                <div class="why-icon">⭐</div>
+                <h4>Qualité Premium</h4>
+                <p>Un service d'excellence au quotidien</p>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">🤝</div>
+                <h4>Professionnalisme</h4>
+                <p>Une équipe à votre écoute</p>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">📍</div>
+                <h4>Proximité</h4>
+                <p>Au c&oelig;ur de Oujda</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GOOGLE REVIEWS BANNER -->
+    <section style="background:white;padding:40px 20px;text-align:center;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb">
+        <div class="anim" style="max-width:600px;margin:0 auto">
+            <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+                <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_74x24dp.png" alt="Google" style="height:24px" loading="lazy">
+                <div style="display:flex;gap:2px"><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg class="star half" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#4b5563"/></linearGradient></defs><path fill="url(#hg)" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg></div>
+                <span style="font-weight:700;font-size:1.1rem">4.4</span>
+                <span style="color:var(--g2);font-size:.9rem">(43+ avis)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-sec">
+        <div class="cta-inner anim">
+            <h2>Commandez maintenant</h2>
+            <p>Contactez-nous directement sur WhatsApp pour plus d'informations</p>
+            <a href="https://wa.me/212661539741" target="_blank" class="cta-wa">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.3 0-4.438-.744-6.167-2.006l-.432-.316-3.25 1.09 1.09-3.25-.316-.432A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                Contactez-nous sur WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="sec" id="contact">
+        <div class="anim">
+            <div class="sec-tag">Contact</div>
+            <h2>Retrouvez-nous</h2>
+            <p class="sec-sub">N'hésitez pas à nous contacter pour toute question.</p>
+        </div>
+        <div class="contact-grid anim">
+            <div class="c-card">
+                <div class="c-icon">📍</div>
+                <h4>Adresse</h4>
+                <p>Oujda, Maroc</p>
+            </div>
+            <div class="c-card">
+                <div class="c-icon">📱</div>
+                <h4>Téléphone</h4>
+                <p>+212661539741</p>
+            </div>
+            <div class="c-card">
+                <div class="c-icon">🕐</div>
+                <h4>Horaires</h4>
+                <p>Lun - Sam : 9h - 19h</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+        <div class="foot-brand">Choco<span>.</span></div>
+        <p>&copy; 2026 Choco Farida : Boulangerie &amp; Pâtisserie &mdash; Oujda</p>
+        <p style="margin-top:8px">Site créé par <a href="https://wa.me/212774946024">MEDIABUZ</a></p>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/212661539741" target="_blank" class="float-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.3 0-4.438-.744-6.167-2.006l-.432-.316-3.25 1.09 1.09-3.25-.316-.432A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+    </a>
+
+    <!-- BADGE -->
+    <div class="badge">Site par <a href="https://wa.me/212774946024">MEDIABUZ</a></div>
+
+    <script>
+        // Preloader
+        window.addEventListener('load',()=>{document.getElementById('loader').classList.add('done')});
+
+        // Scroll animations
+        const obs=new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}})
+        },{threshold:0.15});
+        document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
+    </script>
+</body>
+</html>
